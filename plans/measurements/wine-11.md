@@ -57,7 +57,15 @@ The wine 11.2 base image also has no `libgl1`/`libglx0` (only `libglvnd0`,
 | image | start→login (fresh) | start→login (2nd run) | idle CPU % | scroll CPU % | right-click CPU % | focus stolen? | stderr lines |
 |-------|---------------------|-----------------------|------------|--------------|-------------------|---------------|--------------|
 | ab-baseline (9.14) | | | | | | | |
-| ab-wine11 (11.2)   | | | | | | | |
+| ab-wine11 (11.2)   | n/a (stock launcher segfaulted; manual `wine C:\setup.exe` used) | see below | 2.0 / 2.1 / 2.2 / 5.9 / 1.8 | 212 / 257 / 3 / 154 / 180 | 9.1 / 4.9 / 6.5 / 4.9 / 5.8 | none observed (2 min typing in Chat; event-opening case not testable without tickets) | 15 err/fixme/warn lines |
+
+Memory during the session: 2.9 GiB idle, 3.4-3.8 GiB scrolling, 3.9 GiB after
+the context menu. CPU % is `docker stats` (100 % = one core; container is
+pinned to 4 cores). The right-click case does *not* peg the CPU under wine 11.2
+on this host, unlike the report in upstream #149.
+
+Measured 2026-09-12 by the user (scenarios) and the implementer (`docker stats`
+sampling, 5 samples 10 s apart).
 
 Gate criterion (from the plan): MTGO installs, logs in, and starts a match on
 `ab-wine11`; numbers are for reference, not a speed requirement.
