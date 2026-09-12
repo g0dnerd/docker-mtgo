@@ -65,7 +65,10 @@ workaround_dotnet() {
 }
 workaround_dotnet
 
-setup="/opt/mtgo/mtgo.exe"
+# wine >= 11 segfaults when an .exe is started by its unix path while Z: is
+# removed (see above), so run the installer from inside C: instead
+cp /opt/mtgo/mtgo.exe ~/.wine/drive_c/mtgo-setup.exe
+setup='C:\mtgo-setup.exe'
 
 run wine ${setup}
 started=0
